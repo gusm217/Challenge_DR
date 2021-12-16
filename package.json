@@ -1,0 +1,33 @@
+{
+  "name": "challenge_dr",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gusm217/Challenge_DR.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gusm217/Challenge_DR/issues"
+  },
+  "homepage": "https://github.com/gusm217/Challenge_DR#readme",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "joi": "^17.5.0",
+    "mongodb": "^4.2.2"
+  },
+  "devDependencies": {
+    "chai": "^4.3.4",
+    "jest": "^27.4.5",
+    "mocha": "^9.1.3",
+    "nodemon": "^2.0.15",
+    "sinon": "^12.0.1"
+  }
+}
