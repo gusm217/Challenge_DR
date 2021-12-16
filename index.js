@@ -4,4 +4,4 @@ app.use(express.json());
 
 const { PORT = 3000 } = process.env;
 
-app.listen(PORT, () => {`Rodando certin na porta ${PORT}`});
+app.listen(PORT, () => console.log(`Rodando certin na porta ${PORT}`));
