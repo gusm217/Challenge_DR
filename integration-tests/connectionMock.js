@@ -8,7 +8,8 @@ const OPTIONS = {
 };
 
 const getConnection = async () => {
-  const URLMock = await DBServer.getUri();
+  await DBServer.start();
+  const URLMock = DBServer.getUri();
   return MongoClient.connect(URLMock, OPTIONS);
 };
 

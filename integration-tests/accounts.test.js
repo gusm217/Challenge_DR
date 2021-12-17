@@ -1,3 +1,4 @@
+require('fast-text-encoding');
 const chai = require('chai');
 const sinon = require('sinon');
 const chaiHttp = require('chai-http');
@@ -5,7 +6,6 @@ const { MongoClient, ObjectId } = require('mongodb');
 const { getConnection } = require('./connectionMock');
 const app = require('../index');
 const { describe } = require('mocha');
-const { object } = require('joi');
 
 const { expect } = chai;
 
@@ -13,7 +13,7 @@ chai.use(chaiHttp);
 
 const VALID_ID = '617b6a525c769ab68b4036a0';
 
-describe('Testes para a rota /accconunts', () => {
+describe('Testes para a rota /accounts', () => {
   let connectionMock;
 
   before(async function () {
@@ -26,7 +26,7 @@ describe('Testes para a rota /accconunts', () => {
     await connectionMock.db('DR_Challenge').collection('accounts').deleteMany({});
   });
 
-  descibre('Em caso de erro desconhecido', function() {
+  describe('Em caso de erro desconhecido', function() {
     let response;
 
     before(async function() {
@@ -62,6 +62,7 @@ describe('Testes para a rota /accconunts', () => {
         nome: 'Sicrano de tal',
         cpf: '12345678901',
       });
+      });
 
       it('deve receber um código 400', function() {
         expect(response).to.have.status(400);
@@ -75,6 +76,29 @@ describe('Testes para a rota /accconunts', () => {
         expect(response.body.message).to.be.equal('CPF já cadastrado');
       });
     })
+    
+    describe('Quando cadastra uma nova conta com sucesso', function() {
+      let response;
+
+      before(async function() {
+        response = await chai.request(app).post('/accounts').send({
+          nome: 'Sicrano de tal',
+          cpf: '12345678902',
+        });
+      });
+
+      it('deve receber status 201', function() {
+        expect(response).to.have.status(201);
+      });
+
+      it('deve receber um objeto como resposta', function() {
+        expect(response.body).to.be.an('object');
+      })
+
+      it('deve retornar o objeto com as chaves referentes à conta', function() {
+        expect(response.body).to.have.keys('_id', 'nome', 'cpf');
+      });
+    });
   })
 });
  
