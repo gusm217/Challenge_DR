@@ -1,8 +1,10 @@
-const Joi = require('joi');
+// const Joi = require('joi');
+const { validator } = require('cpf-cnpj-validator')
+const Joi = require('@hapi/joi').extend(validator)
 
 const createAccountSchema = Joi.object({
   nome: Joi.string().required(),
-  cpf: Joi.string().length(11).required(),  
+  cpf: Joi.document().cpf().required(),  
 });
 
 const depositsSchema = Joi.object({
@@ -26,5 +28,5 @@ const transfersSchema = Joi.object({
 module.exports = {
   createAccountSchema,
   depositsSchema,
-  transfersSchema,
+  transfersSchema,  
 }

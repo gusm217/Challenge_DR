@@ -11,8 +11,8 @@ const { expect } = chai;
 
 chai.use(chaiHttp);
 
-const VALID_CPF = '12345678901';
-const VALID_CPF_2 = '12345678902';
+const VALID_CPF = '54271113107';
+const VALID_CPF_2 = '25634428777';
 const VALID_SALDO = 100;
 
 describe('Testes para a rota /accounts', () => {

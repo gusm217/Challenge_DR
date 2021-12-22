@@ -2,7 +2,7 @@ const { createAccountSchema, depositsSchema, transfersSchema } = require('../sch
 
 const createValidation = (req, res, next) => {
   const { nome, cpf } = req.body;
-  const { error } = createAccountSchema.validate({ nome, cpf });
+  const { error } = createAccountSchema.validate({ nome, cpf }); 
   if (error) {
     return res.status(400).json({ message: error.details[0].message });
   }
