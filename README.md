@@ -1,4 +1,4 @@
-<h1 align="center">Challenge - Digital Republic/h1>
+<h1 align="center">Challenge - Digital Republic</h1>
 
 ## Como começar:
 - Clone este repositório
