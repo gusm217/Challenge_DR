@@ -2,7 +2,7 @@
 
 ## Sobre:
 Challenge_DR é uma aplicação que simula um banco e algumas operações como: criação de contas, transferências e depósitos; <br/>
-Stacks: Node.js e Express.
+Stacks utilizadas: Node.js e Express.
 
 ## Como começar:
 - Clone este repositório;
