@@ -8,7 +8,9 @@ const createAccountSchema = Joi.object({
 });
 
 const depositsSchema = Joi.object({
-  cpf: Joi.string().length(11).required(),  
+  cpf: Joi.string().length(11).required().messages({
+    'string.length': '"cpf" deve ter 11 caracteres',
+  }),  
   valor: Joi.number().strict().min(1).max(2000).messages({
     'number.base': '"valor" deve ser um número',
     'number.min': '"valor" deve ser maior que zero',
@@ -17,8 +19,12 @@ const depositsSchema = Joi.object({
 });
 
 const transfersSchema = Joi.object({
-  de: Joi.string().length(11).required(),
-  para: Joi.string().length(11).required(),
+  de: Joi.string().length(11).required().messages({
+    'string.length': '"cpf" da conta "de" deve ter 11 caracteres',
+  }), 
+  para: Joi.string().length(11).required().messages({
+    'string.length': '"cpf" da conta "para" deve ter 11 caracteres',
+  }), 
   valor: Joi.number().strict().min(1).messages({
     'number.base': '"valor" deve ser um número',
     'number.min': '"valor" deve ser maior que 0',    
