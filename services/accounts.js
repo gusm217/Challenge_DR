@@ -13,9 +13,9 @@ const transferBalance = async({ de, para, valor }) => {
   const fromAccount = await accountsModel.findAccount(de);  
   const toAccount = await accountsModel.findAccount(para);
 
-  if (!fromAccount) return ({ code: 404, message: 'Conta origem não encontrada' });
-  if (!toAccount) return ({ code: 404, message: 'Conta destino não encontrada' });
-  if (fromAccount.saldo < valor) return ({ code: 409, message: 'Saldo insuficiente' });
+  if (!fromAccount) return ({ error: 'fromAccountNotFound' });
+  if (!toAccount) return ({ error: 'toAccountNotFound' });
+  if (fromAccount.saldo < valor) return ({ error: 'insuficientBalance' });
 
   await accountsModel.transferUpdate(de, valor * -1);
   await accountsModel.transferUpdate(para, valor);
@@ -25,7 +25,7 @@ const transferBalance = async({ de, para, valor }) => {
 
 const deposit = async({ cpf, valor }) => {
   const account = await accountsModel.findAccount(cpf);
-  if(!account) return ({ code: 404, message: 'Conta não encontrada' });
+  if(!account) return ({ error: 'accountNotFound' });
   
   await accountsModel.depositUpdate(cpf, valor);
 
