@@ -1,7 +1,7 @@
 <h1 align="center">Challenge - Digital Republic</h1>
 
 ## Sobre:
-Challenge_DR é uma aplicação que simula um banco e algumas operações como: criação de contas, transferências e depósitos;
+Challenge_DR é uma aplicação que simula um banco e algumas operações como: criação de contas, transferências e depósitos; <br/>
 Stacks: Node.js e Express.
 
 ## Como começar:
