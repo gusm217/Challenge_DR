@@ -3,10 +3,10 @@ const Joi = require('joi');
 const schema = Joi.object({
   nome: Joi.string().required(),
   cpf: Joi.string().length(11).required(),
-  saldo: Joi.number().min(1).messages({
-    'number': '"saldo" deve ser um número',
-    'number.min': '"saldo" deve ser maior que 0',
-  }),  
+  // saldo: Joi.number().min(1).messages({
+  //   'number': '"saldo" deve ser um número',
+  //   'number.min': '"saldo" deve ser maior que 0',
+  // }),  
 });
 
 const createValidation = (req, res, next) => {

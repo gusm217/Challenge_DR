@@ -2,7 +2,7 @@ require('fast-text-encoding');
 const chai = require('chai');
 const sinon = require('sinon');
 const chaiHttp = require('chai-http');
-const { MongoClient, ObjectId } = require('mongodb');
+const { MongoClient } = require('mongodb');
 const { getConnection } = require('./connectionMock');
 const app = require('../index');
 const { describe } = require('mocha');
@@ -11,8 +11,6 @@ const { expect } = chai;
 
 chai.use(chaiHttp);
 
-const VALID_ID = '617b6a525c769ab68b4036a0';
-const VALID_ID_2 = '617b6a525c769ab68b4036a1';
 const VALID_CPF = '12345678901';
 const VALID_CPF_2 = '12345678902';
 const VALID_SALDO = 100;
@@ -47,7 +45,7 @@ describe('Testes para a rota /accounts', () => {
       });
     
     it('deve receber um objeto de erro', function() {
-      expect(response.body).to.be.an('object');
+      expect(response.body).to.be.an('array');
     });
   });
 
@@ -73,8 +71,7 @@ describe('Testes para a rota /accounts', () => {
         let response;
   
         before(async function() {
-          await connectionMock.db('DR_Challenge').collection('accounts').insertOne({
-            _id: ObjectId(VALID_ID),
+          await connectionMock.db('DR_Challenge').collection('accounts').insertOne({            
             nome: 'Fulano',
             cpf: VALID_CPF,
         });
@@ -116,8 +113,8 @@ describe('Testes para a rota /accounts', () => {
           expect(response.body).to.be.an('object');
         })
   
-        it('deve retornar o objeto com as chaves referentes à conta', function() {
-          expect(response.body).to.have.keys('_id', 'nome', 'cpf', 'saldo');
+        it('deve retornar o objeto com as propriedades referentes à conta', function() {
+          expect(response.body).to.have.all.keys('nome', 'cpf', 'saldo');
         });
       });
     })
@@ -131,13 +128,11 @@ describe('Testes para a rota /accounts', () => {
   
           before(async function() {
             await connectionMock.db('DR_Challenge').collection('accounts').insertMany([
-            {
-              _id: ObjectId(VALID_ID),
+            {              
               nome: 'Fulano',
               cpf: VALID_CPF,
             },
             {
-              _id: ObjectId(VALID_ID_2),
               nome: 'Sicrano',
               cpf: VALID_CPF_2,
             }
@@ -168,12 +163,10 @@ describe('Testes para a rota /accounts', () => {
           before(async function() {
             await connectionMock.db('DR_Challenge').collection('accounts').insertMany([
             {
-              _id: ObjectId(VALID_ID),
               nome: 'Fulano',
               cpf: VALID_CPF,
             },
             {
-              _id: ObjectId(VALID_ID_2),
               nome: 'Sicrano',
               cpf: VALID_CPF_2,
             }
@@ -206,12 +199,10 @@ describe('Testes para a rota /accounts', () => {
         before(async function() {
           await connectionMock.db('DR_Challenge').collection('accounts').insertMany([
           {
-            _id: ObjectId(VALID_ID),
             nome: 'Fulano',
             cpf: VALID_CPF,
           },
           {
-            _id: ObjectId(VALID_ID_2),
             nome: 'Sicrano',
             cpf: VALID_CPF_2,
           }
@@ -243,12 +234,10 @@ describe('Testes para a rota /accounts', () => {
         before(async function() {
           await connectionMock.db('DR_Challenge').collection('accounts').insertMany([
           {
-            _id: ObjectId(VALID_ID),
             nome: 'Fulano',
             cpf: VALID_CPF,
           },
           {
-            _id: ObjectId(VALID_ID_2),
             nome: 'Sicrano',
             cpf: VALID_CPF_2,
           }
@@ -280,13 +269,11 @@ describe('Testes para a rota /accounts', () => {
         before(async function() {
           await connectionMock.db('DR_Challenge').collection('accounts').insertMany([
           {
-            _id: ObjectId(VALID_ID),
             nome: 'Fulano',
             cpf: VALID_CPF,
             saldo: VALID_SALDO,
           },
           {
-            _id: ObjectId(VALID_ID_2),
             nome: 'Sicrano',
             cpf: VALID_CPF_2,
             saldo: 0,
@@ -323,13 +310,11 @@ describe('Testes para a rota /accounts', () => {
         before(async function() {
           await connectionMock.db('DR_Challenge').collection('accounts').insertMany([
           {
-            _id: ObjectId(VALID_ID),
             nome: 'Fulano',
             cpf: VALID_CPF,
             saldo: VALID_SALDO,
           },
           {
-            _id: ObjectId(VALID_ID_2),
             nome: 'Sicrano',
             cpf: VALID_CPF_2,
           }
@@ -362,13 +347,12 @@ describe('Testes para a rota /accounts', () => {
       let response;
 
       before(async function() {
-        await connectionMock.db('DR_Challenge').collection('accounts').insertOne([
+        await connectionMock.db('DR_Challenge').collection('accounts').insertOne(
         {
-          _id: ObjectId(VALID_ID),
           nome: 'Fulano',
           cpf: VALID_CPF,
         },      
-      ]);  
+      );  
 
         response = await chai.request(app).put('/accounts/deposits').send({          
           cpf: VALID_CPF_2,
@@ -393,13 +377,12 @@ describe('Testes para a rota /accounts', () => {
       let response;
 
       before(async function() {
-        await connectionMock.db('DR_Challenge').collection('accounts').insertOne([
+        await connectionMock.db('DR_Challenge').collection('accounts').insertOne(
         {
-          _id: ObjectId(VALID_ID),
           nome: 'Fulano',
           cpf: VALID_CPF,          
         },      
-      ]);  
+      );  
 
         response = await chai.request(app).put('/accounts/deposits').send({          
           cpf: VALID_CPF,
@@ -424,13 +407,12 @@ describe('Testes para a rota /accounts', () => {
       let response;
 
       before(async function() {
-        await connectionMock.db('DR_Challenge').collection('accounts').insertOne([
+        await connectionMock.db('DR_Challenge').collection('accounts').insertOne(
         {
-          _id: ObjectId(VALID_ID),
           nome: 'Fulano',
           cpf: VALID_CPF,          
         },      
-      ]);  
+      );  
 
         response = await chai.request(app).put('/accounts/deposits').send({          
           cpf: VALID_CPF,
@@ -455,13 +437,12 @@ describe('Testes para a rota /accounts', () => {
       let response;
 
       before(async function() {
-        await connectionMock.db('DR_Challenge').collection('accounts').insertOne([
+        await connectionMock.db('DR_Challenge').collection('accounts').insertOne(
         {
-          _id: ObjectId(VALID_ID),
           nome: 'Fulano',
           cpf: VALID_CPF,          
         },      
-      ]);  
+      );  
 
         response = await chai.request(app).put('/accounts/deposits').send({          
           cpf: VALID_CPF,
@@ -486,14 +467,13 @@ describe('Testes para a rota /accounts', () => {
       let response;
 
       before(async function() {
-        await connectionMock.db('DR_Challenge').collection('accounts').insertOne([
+        await connectionMock.db('DR_Challenge').collection('accounts').insertOne(
         {
-          _id: ObjectId(VALID_ID),
           nome: 'Fulano',
           cpf: VALID_CPF,
           saldo: VALID_SALDO,
         },      
-      ]);  
+      );  
 
         response = await chai.request(app).put('/accounts/deposits').send({          
           cpf: VALID_CPF,

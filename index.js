@@ -7,6 +7,6 @@ const { PORT = 3000 } = process.env;
 
 app.use('/accounts', accountsRouter);
 
-app.listen(PORT, () => console.log(`Rodando certin na porta ${PORT}`));
+app.listen(PORT, () => console.log(`Rodando certin na porta ${PORT}!`));
 
 module.exports = app;

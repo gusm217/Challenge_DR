@@ -28,9 +28,17 @@ const depositUpdate = async (cpf, valor) => {
     .catch((err) => console.log(err));
 };
 
+const getAllAccounts = async () => {
+  return connection()
+    .then((db) => db.collection('accounts').find().toArray())
+    .then((result) => result)
+    .catch((err) => console.log(err));
+};
+
 module.exports = {
   createAccount,
   findAccount,  
   transferUpdate,
   depositUpdate,
+  getAllAccounts
 }

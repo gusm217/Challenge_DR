@@ -4,7 +4,7 @@ const schema = Joi.object({
   de: Joi.string().length(11).required(),
   para: Joi.string().length(11).required(),
   valor: Joi.number().min(1).messages({
-    'number': '"valor" deve ser um número',
+    'number.base': '"valor" deve ser um número',
     'number.min': '"valor" deve ser maior que 0',
   })
 });

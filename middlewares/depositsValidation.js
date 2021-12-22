@@ -3,8 +3,8 @@ const Joi = require('joi');
 const schema = Joi.object({
   cpf: Joi.string().length(11).required(),  
   valor: Joi.number().min(1).max(2000).messages({
-    'number': '"valor" deve ser um número',
-    'number.min': '"valor" deve ser maior que 0',
+    'number.base': '"valor" deve ser um número',
+    'number.min': '"valor" deve ser maior que zero',
     'number.max': '"valor" limite para depósito é de R$ 2000',
   })
 });

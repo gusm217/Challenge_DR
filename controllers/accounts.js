@@ -4,7 +4,7 @@ const createAccount = async (req, res) => {
   try {
     const { nome, cpf } = req.body;
 
-    const result = await accountsService.createAccount({nome, cpf});    
+    const result = await accountsService.createAccount({nome, cpf});           
     if (result.message) {
       return res.status(400).json({ message: result.message});
     }
@@ -34,7 +34,8 @@ const transferBalance = async (req, res) => {
 const deposit = async (req, res) => {
   try {
     const { cpf, valor } = req.body;
-    const transaction = await accountsService.deposit({ cpf, valor });
+    const transaction = await accountsService.deposit({ cpf, valor });    
+    console.log(transaction);
     if (transaction.code) {
       return res.status(transaction.code).json({ message: transaction.message });
     }
@@ -46,8 +47,19 @@ const deposit = async (req, res) => {
   }
 }
 
+const getAllAccounts = async (req, res) => {
+  try {
+    const accounts = await accountsService.getAllAccounts();
+    return res.status(200).json(accounts);
+  } catch(err) {
+    console.log(err);
+    return res.status(500).json({ message: 'Erro interno do servidor' });
+  }
+}
+
 module.exports = {
   createAccount,
   transferBalance,
-  deposit
+  deposit,
+  getAllAccounts
 }
