@@ -249,6 +249,41 @@ describe('Testes para a rota /accounts', () => {
           expect(response.body.message).to.be.equal('"valor" deve ser maior que 0');
         });
       });
+
+      describe('Quando o valor da transferência estiver vazio', function() {
+        let response;
+
+        before(async function() {
+          await connectionMock.db('DR_Challenge').collection('accounts').insertMany([
+          {
+            nome: 'Fulano',
+            cpf: VALID_CPF,
+          },
+          {
+            nome: 'Sicrano',
+            cpf: VALID_CPF_2,
+          }
+        ]);
+  
+          response = await chai.request(app).put('/accounts/transfers').send({
+            de: VALID_CPF,
+            para: VALID_CPF_2,
+            valor: '',
+          });
+        });       
+
+        it('deve receber um código 400', function() {
+          expect(response).to.have.status(400);
+        });
+
+        it('deve receber um objeto de erro', function() {
+          expect(response.body).to.be.an('object');
+        });
+
+        it('deve receber a mensagem de erro correta', function() {
+          expect(response.body.message).to.be.equal('"valor" deve ser um número');
+        });
+      });
       
       describe('Quando o saldo da conta origem é insuficiente', function() {
         let response;
@@ -448,7 +483,7 @@ describe('Testes para a rota /accounts', () => {
         it('deve receber a mensagem de erro correta', function() {
           expect(response.body.message).to.be.equal('"valor" deve ser maior que zero');
         });
-      });
+      });      
 
       describe('Quando o depósito é realizado com sucesso', function() {
         let response;

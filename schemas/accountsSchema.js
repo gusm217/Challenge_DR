@@ -13,7 +13,7 @@ const depositsSchema = Joi.object({
     'number.base': '"valor" deve ser um número',
     'number.min': '"valor" deve ser maior que zero',
     'number.max': '"valor" limite para depósito é de R$ 2000',
-  })
+  }).required(),
 });
 
 const transfersSchema = Joi.object({
@@ -22,7 +22,8 @@ const transfersSchema = Joi.object({
   valor: Joi.number().min(1).messages({
     'number.base': '"valor" deve ser um número',
     'number.min': '"valor" deve ser maior que 0',
-  })
+    'number.not.empty': '"valor" não deve ser vazio',
+  }).required(),
 });
 
 module.exports = {
