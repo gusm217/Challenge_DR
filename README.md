@@ -7,6 +7,7 @@
 - 'npm start' para fazer as requisições no API Client de sua preferência
 
 ## Das requisições e endpoints utilizados:
+- Para visualizar todas as contas => GET ('accounts')
 - Para criação de novas contas => POST ('/accounts') passando "nome" e "cpf"
 - Para transferências entre contas => PUT ('/accounts/transfers') passando "de", "para" e "valor". Obs: "de" e "para" esperam o CPF das respectivas contas.
 - Para depósitos => PUT ('/accounts/deposits') passando "cpf" e "valor"
