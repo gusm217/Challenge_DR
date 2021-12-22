@@ -11,7 +11,7 @@ const createAccount = async (account) => {
   return connection()
     .then((db) => db.collection('accounts').insertOne({...account, saldo: 0}))
     .then(() => ({ ...account, saldo: 0 }))
-    .catch((err) => err);
+    .catch((err) => console.log(err));
 };
 
 const transferUpdate = async (cpf, saldo) => {  

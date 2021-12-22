@@ -26,28 +26,7 @@ describe('Testes para a rota /accounts', () => {
   after(async function () {
     MongoClient.connect.restore();
     await connectionMock.db('DR_Challenge').collection('accounts').deleteMany({});
-  });
-
-  describe('Em caso de erro desconhecido', function() {
-    let response;
-
-    before(async function() {
-      MongoClient.connect.resolves(null);
-      response = await chai.request(app).get('/accounts');
-    });
-
-    after(async function () {
-      MongoClient.connect.resolves(connectionMock);
-    });
-
-    it('deve receber um código HTTP 500', function() {
-      expect(response).to.have.status(500);
-      });
-    
-    it('deve receber um objeto de erro', function() {
-      expect(response.body).to.be.an('array');
-    });
-  });
+  });  
 
   describe('Testes para o endpoint GET', function () {
     let response;
@@ -67,6 +46,10 @@ describe('Testes para a rota /accounts', () => {
 
   describe('Testes para as requisições POST', function() {    
     describe('Testes para cadastro de uma nova conta', function () {
+      afterEach(async function () {        
+        await connectionMock.db('DR_Challenge').collection('accounts').deleteMany({});
+      });
+
       describe('Quando já existe uma conta cadastrada no CPF', function() {
         let response;
   
@@ -122,6 +105,10 @@ describe('Testes para a rota /accounts', () => {
 
   describe('Testes para as requisições PUT', function() {
     describe('Testes para realização de transferências', function() {
+      afterEach(async function () {        
+        await connectionMock.db('DR_Challenge').collection('accounts').deleteMany({});
+      });
+
       describe('Quando não existe uma conta cadastrada com o CPF informado', function() {
         describe('Quando a conta de origem não é encontrada', function() {        
           let response;
@@ -287,10 +274,6 @@ describe('Testes para a rota /accounts', () => {
           });
         });
   
-        it('checa se o valor passado é maior que a quantia em saldo', function() {
-          expect(response.valor).to.be.greaterThan(VALID_SALDO);
-        });
-  
         it('deve receber status 409', function() {
           expect(response).to.have.status(409);
         });
@@ -342,156 +325,160 @@ describe('Testes para a rota /accounts', () => {
     }); 
   })
 
-  describe('Testes para realização de depósitos', function() {
-    describe('Quando não existe uma conta cadastrada com o CPF informado', function() {             
-      let response;
+    describe('Testes para realização de depósitos', function() {
+      afterEach(async function () {        
+        await connectionMock.db('DR_Challenge').collection('accounts').deleteMany({});
+      });
 
-      before(async function() {
-        await connectionMock.db('DR_Challenge').collection('accounts').insertOne(
-        {
-          nome: 'Fulano',
-          cpf: VALID_CPF,
-        },      
-      );  
+      describe('Quando não existe uma conta cadastrada com o CPF informado', function() {             
+        let response;
 
-        response = await chai.request(app).put('/accounts/deposits').send({          
-          cpf: VALID_CPF_2,
-          valor: 1,
+        before(async function() {
+          await connectionMock.db('DR_Challenge').collection('accounts').insertOne(
+          {
+            nome: 'Fulano',
+            cpf: VALID_CPF,
+          },      
+        );  
+
+          response = await chai.request(app).put('/accounts/deposits').send({          
+            cpf: VALID_CPF_2,
+            valor: 1,
+          });
+        });
+
+        it('deve receber um código 404', function() {
+          expect(response).to.have.status(404);
+        });
+
+        it('deve receber um objeto de erro', function() {
+          expect(response.body).to.be.an('object');
+        });
+
+        it('deve receber a mensagem de erro correta', function() {
+          expect(response.body.message).to.be.equal('Conta não encontrada');
         });
       });
 
-      it('deve receber um código 404', function() {
-        expect(response).to.have.status(404);
-      });
+      describe('Quando o valor do depósito for inválido', function() {
+        let response;
 
-      it('deve receber um objeto de erro', function() {
-        expect(response.body).to.be.an('object');
-      });
+        before(async function() {
+          await connectionMock.db('DR_Challenge').collection('accounts').insertOne(
+          {
+            nome: 'Fulano',
+            cpf: VALID_CPF,          
+          },      
+        );  
 
-      it('deve receber a mensagem de erro correta', function() {
-        expect(response.body.message).to.be.equal('Conta não encontrada');
-      });
-    });
+          response = await chai.request(app).put('/accounts/deposits').send({          
+            cpf: VALID_CPF,
+            valor: 'abc',
+          });
+        });
 
-    describe('Quando o valor do depósito for inválido', function() {
-      let response;
+        it('deve receber um código 400', function() {
+          expect(response).to.have.status(400);
+        });
 
-      before(async function() {
-        await connectionMock.db('DR_Challenge').collection('accounts').insertOne(
-        {
-          nome: 'Fulano',
-          cpf: VALID_CPF,          
-        },      
-      );  
+        it('deve receber um objeto de erro', function() {
+          expect(response.body).to.be.an('object');
+        });
 
-        response = await chai.request(app).put('/accounts/deposits').send({          
-          cpf: VALID_CPF,
-          valor: 'abc',
+        it('deve receber a mensagem de erro correta', function() {
+          expect(response.body.message).to.be.equal('"valor" deve ser um número');
         });
       });
 
-      it('deve receber um código 400', function() {
-        expect(response).to.have.status(400);
-      });
+      describe('Quando o valor do depósito for maior que 2000', function() {
+        let response;
 
-      it('deve receber um objeto de erro', function() {
-        expect(response.body).to.be.an('object');
-      });
+        before(async function() {
+          await connectionMock.db('DR_Challenge').collection('accounts').insertOne(
+          {
+            nome: 'Fulano',
+            cpf: VALID_CPF,          
+          },      
+        );  
 
-      it('deve receber a mensagem de erro correta', function() {
-        expect(response.body.message).to.be.equal('"valor" deve ser um número');
-      });
-    });
+          response = await chai.request(app).put('/accounts/deposits').send({          
+            cpf: VALID_CPF,
+            valor: 2001,
+          });
+        });
 
-    describe('Quando o valor do depósito for maior que 2000', function() {
-      let response;
+        it('deve receber um código 400', function() {
+          expect(response).to.have.status(400);
+        });
 
-      before(async function() {
-        await connectionMock.db('DR_Challenge').collection('accounts').insertOne(
-        {
-          nome: 'Fulano',
-          cpf: VALID_CPF,          
-        },      
-      );  
+        it('deve receber um objeto de erro', function() {
+          expect(response.body).to.be.an('object');
+        });
 
-        response = await chai.request(app).put('/accounts/deposits').send({          
-          cpf: VALID_CPF,
-          valor: 2001,
+        it('deve receber a mensagem de erro correta', function() {
+          expect(response.body.message).to.be.equal('"valor" limite para depósito é de R$ 2000');
         });
       });
 
-      it('deve receber um código 400', function() {
-        expect(response).to.have.status(400);
-      });
+      describe('Quando o valor do depósito for igual a zero', function() {
+        let response;
 
-      it('deve receber um objeto de erro', function() {
-        expect(response.body).to.be.an('object');
-      });
+        before(async function() {
+          await connectionMock.db('DR_Challenge').collection('accounts').insertOne(
+          {
+            nome: 'Fulano',
+            cpf: VALID_CPF,          
+          },      
+        );  
 
-      it('deve receber a mensagem de erro correta', function() {
-        expect(response.body.message).to.be.equal('"valor" limite para depósito é de R$ 2000');
-      });
-    });
+          response = await chai.request(app).put('/accounts/deposits').send({          
+            cpf: VALID_CPF,
+            valor: 0,
+          });
+        });
 
-    describe('Quando o valor do depósito for igual a zero', function() {
-      let response;
+        it('deve receber um código 400', function() {
+          expect(response).to.have.status(400);
+        });
 
-      before(async function() {
-        await connectionMock.db('DR_Challenge').collection('accounts').insertOne(
-        {
-          nome: 'Fulano',
-          cpf: VALID_CPF,          
-        },      
-      );  
+        it('deve receber um objeto de erro', function() {
+          expect(response.body).to.be.an('object');
+        });
 
-        response = await chai.request(app).put('/accounts/deposits').send({          
-          cpf: VALID_CPF,
-          valor: 0,
+        it('deve receber a mensagem de erro correta', function() {
+          expect(response.body.message).to.be.equal('"valor" deve ser maior que zero');
         });
       });
 
-      it('deve receber um código 400', function() {
-        expect(response).to.have.status(400);
-      });
+      describe('Quando o depósito é realizado com sucesso', function() {
+        let response;
 
-      it('deve receber um objeto de erro', function() {
-        expect(response.body).to.be.an('object');
-      });
+        before(async function() {
+          await connectionMock.db('DR_Challenge').collection('accounts').insertOne(
+          {
+            nome: 'Fulano',
+            cpf: VALID_CPF,
+            saldo: VALID_SALDO,
+          },      
+        );  
 
-      it('deve receber a mensagem de erro correta', function() {
-        expect(response.body.message).to.be.equal('"valor" deve ser maior que zero');
-      });
-    });
+          response = await chai.request(app).put('/accounts/deposits').send({          
+            cpf: VALID_CPF,
+            valor: 50,
+          });
+        });
 
-    describe('Quando o depósito é realizado com sucesso', function() {
-      let response;
+        it('deve receber status 200', function() {
+          expect(response).to.have.status(200);
+        });
 
-      before(async function() {
-        await connectionMock.db('DR_Challenge').collection('accounts').insertOne(
-        {
-          nome: 'Fulano',
-          cpf: VALID_CPF,
-          saldo: VALID_SALDO,
-        },      
-      );  
+        it('deve receber um objeto de erro', function() {
+          expect(response.body).to.be.an('object');
+        });
 
-        response = await chai.request(app).put('/accounts/deposits').send({          
-          cpf: VALID_CPF,
-          valor: 50,
+        it('deve receber a mensagem de sucesso correta', function() {
+          expect(response.body.message).to.be.equal('Depósito realizado com sucesso');
         });
       });
-
-      it('deve receber status 200', function() {
-        expect(response).to.have.status(200);
-      });
-
-      it('deve receber um objeto de erro', function() {
-        expect(response.body).to.be.an('object');
-      });
-
-      it('deve receber a mensagem de sucesso correta', function() {
-        expect(response.body.message).to.be.equal('Depósito realizado com sucesso');
-      });
-    });
   });
 })});

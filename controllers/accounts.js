@@ -34,8 +34,7 @@ const transferBalance = async (req, res) => {
 const deposit = async (req, res) => {
   try {
     const { cpf, valor } = req.body;
-    const transaction = await accountsService.deposit({ cpf, valor });    
-    console.log(transaction);
+    const transaction = await accountsService.deposit({ cpf, valor });        
     if (transaction.code) {
       return res.status(transaction.code).json({ message: transaction.message });
     }
