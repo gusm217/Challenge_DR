@@ -1,6 +1,6 @@
 # Challenge_DR
 
-##Como começar:
+## Como começar:
 - Clone este repositório
 - Dê o comando 'npm install' no terminal da pasta raiz
 - Copie as variáveis de ambiente de '.envExample' ou crie um novo arquivo '.env' com as respectivas variáveis e as complete
