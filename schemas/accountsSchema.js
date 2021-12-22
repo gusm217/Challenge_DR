@@ -9,7 +9,7 @@ const createAccountSchema = Joi.object({
 
 const depositsSchema = Joi.object({
   cpf: Joi.string().length(11).required(),  
-  valor: Joi.number().min(1).max(2000).messages({
+  valor: Joi.number().strict().min(1).max(2000).messages({
     'number.base': '"valor" deve ser um número',
     'number.min': '"valor" deve ser maior que zero',
     'number.max': '"valor" limite para depósito é de R$ 2000',
@@ -19,10 +19,9 @@ const depositsSchema = Joi.object({
 const transfersSchema = Joi.object({
   de: Joi.string().length(11).required(),
   para: Joi.string().length(11).required(),
-  valor: Joi.number().min(1).messages({
+  valor: Joi.number().strict().min(1).messages({
     'number.base': '"valor" deve ser um número',
-    'number.min': '"valor" deve ser maior que 0',
-    'number.not.empty': '"valor" não deve ser vazio',
+    'number.min': '"valor" deve ser maior que 0',    
   }).required(),
 });
 
