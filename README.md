@@ -1,4 +1,4 @@
-<p align="center"># Challenge_DR</p>
+<h1 align="center"># Challenge_DR</h1>
 
 ## Como começar:
 - Clone este repositório
