@@ -1,8 +1,6 @@
 const express = require('express');
 const accountsController = require('../controllers/accounts');
-const { createValidation } = require('../middlewares/createValidation');
-const { transfersValidation } = require('../middlewares/transfersValidation');
-const { depositsValidation } = require('../middlewares/depositsValidation');
+const { createValidation, depositsValidation, transfersValidation } = require('../validations/schemasValidation');
 
 const router = express.Router();
 
