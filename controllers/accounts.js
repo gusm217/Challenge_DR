@@ -1,20 +1,21 @@
+const rescue = require('express-rescue');
 const accountsService = require('../services/accounts');
 
-const createAccount = async (req, res) => {
+const createAccount = rescue(async (req, res, next) => {
   try {
     const { nome, cpf } = req.body;
 
     const result = await accountsService.createAccount({nome, cpf});           
-    if (result.message) {
-      return res.status(400).json({ message: result.message});
-    }
-
+    // console.log(result.error)
+    if (result.error) return next(result.error);
+    console.log('HEYYYYU')
     return res.status(201).json(result);
   } catch(err) {
     console.log(err);
+    console.log('LAAALALAALAL')
     return res.status(500).json({ message: 'Erro interno do servidor' });
   }  
-}
+});
 
 const transferBalance = async (req, res) => {
   try {

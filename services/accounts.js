@@ -3,7 +3,7 @@ const accountsModel = require('../models/Accounts');
 const createAccount = async(account) => {  
   const doesAccountExist = await accountsModel.findAccount(account.cpf);
   if (doesAccountExist) {
-    return ({ message: 'CPF já cadastrado' });
+    return ( { error: 'cpfAlreadyRegistered'})
   }
     
   return accountsModel.createAccount(account);
