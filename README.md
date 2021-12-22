@@ -14,4 +14,4 @@
 ## Cobertura de testes:
 Os testes de integração podem ser checados através do comando 'npm test' na pasta raiz
 
-
+Sugestões e melhorias, por favor, entre em contato =)
