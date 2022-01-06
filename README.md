@@ -25,7 +25,7 @@ To try out all endpoints and their respective responses, I used Swagger to docum
 - mongodb: as MongoDB is a non-relational database, relationships between data would have a better fit with relational databases, as MySQL. This is somewhat related to hierarchical data, but instead of ownership, you need peer relationships. Since the API doesn't need those relationships, found it more proper to use MongoDB, as we still can count on: storing large amount of data as the API scales, using cloude computing and storage and rapid development: If you are developing using modern agile methodologies, A NoSQL database doesn’t require the level of preparation typically needed for relational databases; <br/>
 "swagger-ui-express": it let's generate interactive API documentation that lets your users try out the API calls directly in the browser.  <br/>
 
-# devDependencies: 
+### devDependencies: 
 - chai: is an assertion library. Usually used to expect some answers of our tests; <br/>
 - chai-http: " provides an interface for live integration testing by making assertions for common http tasks; <br/>
 - mocha: is a test runner. This just means that it is a tool that runs and executes our tests. The tests themselves aren’t written in Mocha. Other test runners include Jasmine, Jest; <br/>
