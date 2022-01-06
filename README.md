@@ -7,7 +7,7 @@ DR_Challenge simulates an API bank with features as: account creation, transfers
 - Clone this repository;
 - Open the terminal on the root folder and use 'npm install';
 - Copy the enviroment variables from '.envExample' and create a new file called '.env' then paste and fill them;
-- 'npm start' and it's set to work on any API client of your favor.
+- Then go to the next step to test all endpoints.
 
 ## API documentation:
 To try out all endpoints and their respective responses, I used Swagger to document  the  routes. <br/>
