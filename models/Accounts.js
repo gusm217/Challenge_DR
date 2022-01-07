@@ -7,23 +7,23 @@ const findAccount = async (cpf) => {
     .catch((err) => console.log(err));
 };
 
-const createAccount = async (account) => {
+const createAccount = async ({ name, cpf }) => {
   return connection()
-    .then((db) => db.collection('accounts').insertOne({...account, saldo: 0}))
-    .then(() => ({ ...account, saldo: 0 }))
+    .then((db) => db.collection('accounts').insertOne({ name, cpf, balance: 0}))
+    .then(() => ({ name, cpf, balance: 0 }))
     .catch((err) => console.log(err));
 };
 
-const transferUpdate = async (cpf, saldo) => {  
+const transferUpdate = async (cpf, balance) => {  
   return connection()
-    .then((db) => db.collection('accounts').updateOne({ cpf }, { $inc: { saldo } }))
+    .then((db) => db.collection('accounts').updateOne({ cpf }, { $inc: { balance } }))
     .then((result) => result)
     .catch((err) => console.log(err));
 };
 
 const depositUpdate = async (cpf, valor) => {
   return connection()
-    .then((db) => db.collection('accounts').updateOne({ cpf }, { $inc: { saldo: valor } }))
+    .then((db) => db.collection('accounts').updateOne({ cpf }, { $inc: { balance: valor } }))
     .then((result) => result)
     .catch((err) => console.log(err));
 };

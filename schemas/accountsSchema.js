@@ -3,31 +3,31 @@ const { validator } = require('cpf-cnpj-validator')
 const Joi = require('@hapi/joi').extend(validator)
 
 const createAccountSchema = Joi.object({
-  nome: Joi.string().required(),
+  name: Joi.string().required(),
   cpf: Joi.document().cpf().required(),  
 });
 
 const depositsSchema = Joi.object({
   cpf: Joi.string().length(11).required().messages({
-    'string.length': '"cpf" deve ter 11 caracteres',
+    'string.length': '"cpf" should be 11 characters long',
   }),  
-  valor: Joi.number().strict().min(1).max(2000).messages({
-    'number.base': '"valor" deve ser um número',
-    'number.min': '"valor" deve ser maior que zero',
-    'number.max': '"valor" limite para depósito é de R$ 2000',
+  amount: Joi.number().strict().min(1).max(2000).messages({
+    'number.base': '"amount" must be a number',
+    'number.min': '"amount" must be greater than 0',
+    'number.max': '"amount" limit for deposits is R$ 2000',
   }).required(),
 });
 
 const transfersSchema = Joi.object({
-  de: Joi.string().length(11).required().messages({
-    'string.length': '"cpf" da conta "de" deve ter 11 caracteres',
+  from: Joi.string().length(11).required().messages({
+    'string.length': '"cpf" of "from" account should be 11 characters long',
   }), 
-  para: Joi.string().length(11).required().messages({
-    'string.length': '"cpf" da conta "para" deve ter 11 caracteres',
+  to: Joi.string().length(11).required().messages({
+    'string.length': '"cpf" of "to" account should be 11 characters long',
   }), 
-  valor: Joi.number().strict().min(1).messages({
-    'number.base': '"valor" deve ser um número',
-    'number.min': '"valor" deve ser maior que 0',    
+  amount: Joi.number().strict().min(1).messages({
+    'number.base': '"amount" must be a number',
+    'number.min': '"amount" must be greater than 0',
   }).required(),
 });
 

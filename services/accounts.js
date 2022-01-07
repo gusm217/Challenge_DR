@@ -1,35 +1,35 @@
 const accountsModel = require('../models/Accounts');
 
-const createAccount = async(account) => {  
-  const doesAccountExist = await accountsModel.findAccount(account.cpf);
+const createAccount = async({ name, cpf }) => {  
+  const doesAccountExist = await accountsModel.findAccount(cpf);
   if (doesAccountExist) {
     return ( { error: 'cpfAlreadyRegistered'})
   }
     
-  return accountsModel.createAccount(account);
+  return accountsModel.createAccount({ name, cpf });
 }
 
-const transferBalance = async({ de, para, valor }) => {
-  const fromAccount = await accountsModel.findAccount(de);  
-  const toAccount = await accountsModel.findAccount(para);
+const transferBalance = async({ from, to, amount }) => {
+  const fromAccount = await accountsModel.findAccount(from);  
+  const toAccount = await accountsModel.findAccount(to);
 
   if (!fromAccount) return ({ error: 'fromAccountNotFound' });
   if (!toAccount) return ({ error: 'toAccountNotFound' });
-  if (fromAccount.saldo < valor) return ({ error: 'insuficientBalance' });
+  if (fromAccount.balance < amount) return ({ error: 'insuficientBalance' });
 
-  await accountsModel.transferUpdate(de, valor * -1);
-  await accountsModel.transferUpdate(para, valor);
+  await accountsModel.transferUpdate(from, amount * -1);
+  await accountsModel.transferUpdate(to, amount);
 
-  return ({ message: "Transferência realizada com sucesso" });
+  return ({ message: "Transfer was successful" });
 }
 
-const deposit = async({ cpf, valor }) => {
+const deposit = async({ cpf, amount }) => {
   const account = await accountsModel.findAccount(cpf);
   if(!account) return ({ error: 'accountNotFound' });
   
-  await accountsModel.depositUpdate(cpf, valor);
+  await accountsModel.depositUpdate(cpf, amount);
 
-  return ({ message: "Depósito realizado com sucesso" });
+  return ({ message: "Deposit  was successful" });
 }
 
 const getAllAccounts = async() => {

@@ -1,0 +1,281 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "API simulating a bank with features: account creation, transfers between accounts and deposits",
+    "version": "1.0.0",
+    "title": "DR_Challenge"
+  },
+  "host": "localhost:3000",
+  "basePath": "/accounts",
+  "tags": [
+    {
+      "name": "create",
+      "description": "Where you can create your account passing name and CPF"
+    },
+    {
+      "name": "transfers",
+      "description": "Where you can transfer money between accounts"
+    },
+    {
+      "name": "deposits",
+      "description": "Where you can deposit money in your or someone elses account"
+    },
+    {
+      "name": "accounts",
+      "description": "Where you can fetch all registered accounts"
+    }
+  ],
+  "schemes": [    
+    "http"
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "tags": [
+          "accounts"
+        ],
+        "summary": "Find all registered accounts",
+        "description": "Returns all registered accounts",
+        "operationId": "getAllAccounts",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "create"
+        ],
+        "summary": "Create a new account",
+        "description": "Add a new account based on CPF (numbers only) and name",
+        "operationId": "createAccount",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Data necessary to open a new account",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "The name of the account owner",
+                  "default": "Person 1"
+                },
+                "cpf": {
+                  "type": "string",
+                  "description": "The CPF of the account owner",
+                  "default": "12345678901"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Sucessfully created"
+          },
+          "400": {
+            "description": "CPF already registered"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/transfers": {
+      "put": {
+        "tags": [
+          "transfers"
+        ],
+        "summary": "Transfer money between accounts",
+        "description": "Passing two valid accounts CPF (numbers only) and amount to transfer money from one account to another",
+        "operationId": "transferMoney",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Data necessary to transfer money: two valids accounts CPF (numbers only) and wished amount to transfer",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "from": {
+                  "type": "string",
+                  "description": "The CPF of the accounts owner",
+                  "default": "12345678902"
+                },
+                "to": {
+                  "type": "string",
+                  "description": "The CPF of the accounts owner",
+                  "default": "12345678901"
+                },
+                "amount": {
+                  "type": "number",
+                  "description": "The wished amount to transfer",
+                  "default": "100"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Transfer was successful"
+          },
+          "404": {
+            "description": "Source account or target account not found"
+          },
+          "409": {
+            "description": "Insuficient funds"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/deposits": {
+      "put": {
+        "tags": [
+          "deposits"
+        ],
+        "summary": "Deposit money in an account",
+        "description": "Passing a valid account CPF (numbers only) and amount to be deposited into the accounts balance",
+        "operationId": "depositMoney",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Data necessary to deposit money: a valid account CPF (numbers only) and wished amount to be deposited",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "cpf": {
+                  "type": "string",
+                  "description": "The CPF of the accounts owner",
+                  "default": "12345678902"
+                },
+                "amount": {
+                  "type": "number",
+                  "description": "The wished amount to be deposited",
+                  "default": "100"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deposit was successful"
+          },
+          "404": {
+            "description": "Account was not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Category": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "Tag": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "Pet": {
+      "type": "object",
+      "required": [
+        "name",
+        "photoUrls"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "category": {
+          "$ref": "#/definitions/Category"
+        },
+        "name": {
+          "type": "string",
+          "example": "doggie"
+        },
+        "photoUrls": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Tag"
+          }
+        },
+        "status": {
+          "type": "string",
+          "description": "pet status in the store",
+          "enum": [
+            "available",
+            "pending",
+            "sold"
+          ]
+        }
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  }
+}
