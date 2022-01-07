@@ -17,7 +17,7 @@ To try out all endpoints and their respective responses, I used Swagger to docum
 ## Dependencies used:  
 - cors: allows servers to specify not only who can access the assets, but also how they can be accessed; <br/>
 - cpf-cnpj-validator: is a lib that validates CPF format and if it's a real one; <br/> 
-- dotenv: used to keep sensible data private, as: SQL login, PORT, database name, and others; with .env files; <br/>
+- dotenv: used to keep sensible data private, as: SQL login, PORT, database name, and others; with '.env' files; <br/>
 - express: great for designing and building web applications quickly and easily since it only needs JS. Sincerely? Express is the only framework I've studied so far and I Know there are many more that could have solved the problem, as AdonisJS, which supports Typescript; but I know Express is an amazing tool as well, so... <3 <br/>
 - express-rescue: allows a cleaner and more readable code by wrapping up all erros and sending them to 'next()' on your handler error, as a middleware; <br/>
 - fast-text-encoding: this tool I confess I've never encountered before. An error showed up not allowing my integration tests to work. So I googled up and found this solution, which only had to be required on test's first line and worked =) <br/>
