@@ -28,7 +28,7 @@ To try out all endpoints and their respective responses, I used Swagger to docum
 ### devDependencies: 
 - chai: is an assertion library. Usually used to expect some answers of our tests; <br/>
 - chai-http: " provides an interface for live integration testing by making assertions for common http tasks; <br/>
-- mocha: is a test runner. This just means that it is a tool that runs and executes our tests. The tests themselves aren’t written in Mocha; <br/>
+- mocha: is a test runner. This just means that it is a tool that runs and executes our tests; <br/>
 - mongodb-memory-server: it enables us to start a mongod process that stores data in memory. It is a package that spins up a real MongoDB server; <br/>
 - nodemon: simple monitor script for use during development of a node.js app; <br/> 
 - sinon: provides stand-alone test spies, stubs, and mocks; <br/>
