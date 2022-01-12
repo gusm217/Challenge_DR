@@ -23,7 +23,7 @@ To try out all endpoints and their respective responses, I used Swagger to docum
 - fast-text-encoding: this tool I confess I've never encountered before. An error showed up not allowing my integration tests to work. So I googled up and found this solution, which only had to be required on test's first line and worked =) <br/>
 - joi: joi is an amazing and powerful tool where you can validate your entries through schemas for Javascript code; <br/>
 - mongodb: as MongoDB is a non-relational database, relationships between data would have a better fit with relational databases, as MySQL. This is somewhat related to hierarchical data, but instead of ownership, you need peer relationships. Since this API doesn't need those relationships, found it more proper to use MongoDB, as we still can count on: storing large amount of data as the API scales, using cloude computing and storage and rapid development: If you are developing using modern agile methodologies, A NoSQL database doesn’t require the level of preparation typically needed for relational databases; <br/>
-"swagger-ui-express": it let's generate interactive API documentation that lets your users try out the API calls directly in the browser.  <br/>
+"swagger-ui-express": it let's generate interactive API documentation that let your users try out the API calls directly in the browser.  <br/>
 
 ### devDependencies: 
 - chai: is an assertion library. Usually used to expect some answers of our tests; <br/>
